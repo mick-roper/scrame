@@ -43,10 +43,20 @@ func Handler(req Request) (Response, error) {
 
 	x, err := process(payload)
 
-	resBody = x.GeneratedName
+	if err != nil {
+		resStatusCode = 400
+		resBody = err.Error()
+	}
+
+	jsonData, err := json.Marshal(&x)
+
+	if err != nil {
+		resStatusCode = 500
+		resBody = err.Error()
+	}
 
 	res := Response{
-		Body:       resBody,
+		Body:       string(jsonData),
 		StatusCode: resStatusCode,
 	}
 
