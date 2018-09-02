@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"strings"
 
 	"github.com/aws/aws-lambda-go/events"
@@ -21,7 +22,7 @@ type RequestPayload struct {
 
 // ResponsePayload returned to the client
 type ResponsePayload struct {
-	Name string `json:"name"`
+	GeneratedName string `json:"generatedName"`
 }
 
 func main() {
@@ -38,9 +39,11 @@ func Handler(req Request) (Response, error) {
 	if err != nil {
 		resStatusCode = 400
 		resBody = "bad input data"
-	} else {
-		resBody, resStatusCode = process(payload)
 	}
+
+	x, err := process(payload)
+
+	resBody = x.GeneratedName
 
 	res := Response{
 		Body:       resBody,
@@ -60,11 +63,9 @@ func decode(s string) (*RequestPayload, error) {
 	return &p, err
 }
 
-func process(p *RequestPayload) (string, int) {
+func process(p *RequestPayload) (*ResponsePayload, error) {
 	switch p.Kind {
-	case "sci-fi":
-		return "sith sloths", 200
 	default:
-		return "unknown kind", 400
+		return nil, errors.New("unknown kind")
 	}
 }
