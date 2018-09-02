@@ -77,6 +77,8 @@ func decode(s string) (*RequestPayload, error) {
 
 func process(p *RequestPayload) (*ResponsePayload, error) {
 	switch p.Kind {
+	case "scifi":
+		return &ResponsePayload{"sith sloths"}, nil
 	default:
 		return nil, errors.New("unknown kind")
 	}
