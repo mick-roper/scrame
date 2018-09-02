@@ -55,8 +55,10 @@ func Handler(req Request) (Response, error) {
 		resBody = err.Error()
 	}
 
+	resBody = string(jsonData)
+
 	res := Response{
-		Body:       string(jsonData),
+		Body:       resBody,
 		StatusCode: resStatusCode,
 	}
 
