@@ -66,6 +66,10 @@ func Handler(req Request) (Response, error) {
 }
 
 func decode(s string) (*RequestPayload, error) {
+	if len(s) == 0 {
+		return nil, errors.New("no input data")
+	}
+
 	reader := strings.NewReader(s)
 
 	var p RequestPayload
